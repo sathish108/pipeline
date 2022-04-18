@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite errors="0" failures="0" file="app_tests.py" name="app_tests.TestCompInitTimePeriods-20191030143815" skipped="0" tests="5" time="0.016" timestamp="2019-10-30T14:38:15">
+	<testcase classname="app_tests.TestCompInitTimePeriods" file="src/unittest/python/app_tests.py" line="11" name="test_a_health_check" time="0.011" timestamp="2019-10-30T14:38:15">
+		<system-out>
+<![CDATA[]]>		</system-out>
+		<system-err>
+<![CDATA[]]>		</system-err>
+	</testcase>
+	<testcase classname="app_tests.TestCompInitTimePeriods" file="src/unittest/python/app_tests.py" line="19" name="test_b_get" time="0.001" timestamp="2019-10-30T14:38:15">
+		<system-out>
+<![CDATA[]]>		</system-out>
+		<system-err>
+<![CDATA[]]>		</system-err>
+	</testcase>
+	<testcase classname="app_tests.TestCompInitTimePeriods" file="src/unittest/python/app_tests.py" line="28" name="test_c_post" time="0.001" timestamp="2019-10-30T14:38:15">
+		<system-out>
+<![CDATA[]]>		</system-out>
+		<system-err>
+<![CDATA[]]>		</system-err>
+	</testcase>
+	<testcase classname="app_tests.TestCompInitTimePeriods" file="src/unittest/python/app_tests.py" line="39" name="test_d_put" time="0.001" timestamp="2019-10-30T14:38:15">
+		<system-out>
+<![CDATA[]]>		</system-out>
+		<system-err>
+<![CDATA[]]>		</system-err>
+	</testcase>
+	<testcase classname="app_tests.TestCompInitTimePeriods" file="src/unittest/python/app_tests.py" line="48" name="test_e_delete" time="0.001" timestamp="2019-10-30T14:38:15">
+		<system-out>
+<![CDATA[]]>		</system-out>
+		<system-err>
+<![CDATA[]]>		</system-err>
+	</testcase>
+</testsuite>

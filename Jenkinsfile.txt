@@ -1,0 +1,111 @@
+node{
+	def project = 'disney-218910'
+	def appName = 'flask-app'
+	def imageTag = "gcr.io/${project}/${appName}:latest"
+	def external_ip=""
+	stage('scm checkout')
+	{
+    	git branch: 'build-flow-modified',
+    	credentialsId: '29f895b3-62ad-4786-998d-53850237b3b1',
+    	url: 'https://gitlab.qdatalabs.com/CI_CD/ci_flask/'
+	}
+    
+	stage('pylint testing')
+	{
+    	sh '/usr/local/bin/pylint -r  y text  y $WORKSPACE/src/main/python/*  $WORKSPACE/src/unittest/python/* || exit 0 >> pylintresults.txt'
+	}
+	stage('pytesting')
+	{
+   	 
+ 	sh '/usr/local/bin/pytest	$WORKSPACE/src/unittest/python/*_tests.py || exit 0 >> pytestresults.txt'
+	}
+	stage(' pytest coverage')
+	{
+  	sh '/usr/local/bin/pytest --cov=$WORKSPACE/src/main/  $WORKSPACE/src/unittest/python/*_tests.py > testcoverage.txt'
+  	//def actualvalue=sh returnStdout: true,script:"grep -Eo [0-9]*% testcoverage.txt | tail -1 "
+  	sh 'grep -Eo [0-9]*% testcoverage.txt | tail -1 >  result.txt'
+  	def actual= sh returnStdout: true,script: 'sed s/.$// result.txt'
+  	int actualvalue = "${actual}".toInteger()
+  	int expectedvalue=62
+  	if (actualvalue>=expectedvalue ){
+      	echo "Coverage Passed"
+      	}
+  	else {
+    	emailext attachLog: true,
+    	body: "Please find build url for checking logs${env.JOB_URL}",
+    	recipientProviders: [developers()],subject: "${env.JOB_NAME}  faild due to less coverage",
+    	to: 'ci-cd@quantiphi.com'
+    	sh "exit 1"
+    	}  
+ 	}
+    
+	stage('SonarQube Analysis') {
+    	def scannerHome = tool 'sonarscanner';
+    	withSonarQubeEnv('SonarQube') {
+	sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectName=QualityAssurance -Dsonar.projectKey=QualityAssurance -Dsonar.sources=/var/lib/jenkins/workspace/flaskapp-mod/src/main/python/app.py -Dsonar.sources=/var/lib/jenkins/workspace/flaskapp-mod/src/unittest/ -Dsonar.projectVersion=1.0 -Dsonar.language=py"
+ 	}
+	}
+	
+	stage(" Check Quality Gate status "){
+    	timeout(time: 1, unit: 'MINUTES') {
+          	def qg = waitForQualityGate()
+          	if (qg.status != 'OK') {
+              	echo "build failed"
+            	error "Pipeline aborted due to quality gate failure: ${qg.status}"
+             	 
+          	}
+    	}
+  	}
+    
+	stage('building docker image')
+	{
+  	sh "docker build -t ${imageTag} ."
+	}
+	stage('Push docker image to GCR')
+	{
+  	sh "gcloud docker -- push ${imageTag}"
+	}
+	stage('deploying to kubernetes cluster')
+	{
+ 	   sh "gcloud container clusters get-credentials standard-cluster-2 --zone us-east1-b --project disney-218910"
+	   sh "kubectl create -f deployment.yaml"
+	   sh "kubectl create -f service.yaml"
+	   sh "kubectl get service"
+	}
+	stage("deployment to k8's using Helm"){
+   	 
+    	sh "python3 $WORKSPACE/src/main/python/create_yaml.py"
+    	sh "gcloud container clusters get-credentials standard-cluster-2 --zone us-east1-b --project disney-218910"
+    	sh("/usr/local/bin/helm install flaskapplication $WORKSPACE/helm/flaskapp")
+	}
+	stage('Fetching the endpoint'){
+
+  	sh("chmod 755 endpoint.sh")
+  	sh("./endpoint.sh")
+  	external_ip = sh(returnStdout: true, script: "kubectl get service flaskapplication -o jsonpath='{.status.loadBalancer.ingress[0].ip}'")
+  	def port=8086
+  	echo "${external_ip}"
+  	sh script:" echo ${external_ip} > server.txt "
+  	sh script:" echo ${port} >> server.txt "
+ 	
+	}
+	stage('Functional Testing'){
+    
+  	sh("python3 func_test.py server.txt")
+    }
+	stage('Load Testing'){
+    	sh "/usr/local/bin/locust -f locustfile.py --no-web -c 100 -r 5 -t 1m --port=80 --host=http://${external_ip}:8086 --csv=loadtest"
+	}
+	stage('Health Check'){
+    	sh "python3 health_check.py server.txt"
+	}
+	stage('Publish Reports by Email'){
+    	emailext attachLog: true,
+    	attachmentsPattern: 'pylintresults.txt , testcoverage.txt, loadtest_requests.csv',body: '''Please find build url for checking logs  $BUILD_URL''',
+    	recipientProviders: [developers()],
+    	subject: 'jenkins build reports',
+    	to: 'ci-cd@quantiphi.com’
+
+	}
+}	
+

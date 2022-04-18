@@ -1,0 +1,64 @@
+{
+  "module_names": [
+    {
+      "branches": 10,
+      "branches_missing": 4,
+      "branches_partial": 4,
+      "coverage": 96.875,
+      "lines": [
+        4,
+        5,
+        8,
+        13,
+        14,
+        15,
+        16,
+        21,
+        22,
+        23,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        51,
+        52,
+        53,
+        54,
+        55,
+        57,
+        58
+      ],
+      "lines_not_covered": [
+        58
+      ],
+      "module": "app",
+      "sum_lines": 32,
+      "sum_lines_not_covered": 1
+    },
+    {
+      "branches": 0,
+      "branches_missing": 0,
+      "branches_partial": 0,
+      "coverage": 100,
+      "lines": [],
+      "lines_not_covered": [],
+      "module": "__init__",
+      "sum_lines": 0,
+      "sum_lines_not_covered": 0
+    }
+  ],
+  "overall_branch_coverage": 60.0,
+  "overall_branch_partial_coverage": 60.0,
+  "overall_coverage": 96.875
+}

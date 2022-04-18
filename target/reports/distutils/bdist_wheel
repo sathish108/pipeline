@@ -1,0 +1,39 @@
+running clean
+'build/lib' does not exist -- can't clean it
+'build/bdist.linux-x86_64' does not exist -- can't clean it
+'build/scripts-3.6' does not exist -- can't clean it
+running bdist_wheel
+running build
+running build_py
+creating build
+creating build/lib
+copying app.py -> build/lib
+copying __init__.py -> build/lib
+installing to build/bdist.linux-x86_64/wheel
+running install
+running install_lib
+creating build/bdist.linux-x86_64
+creating build/bdist.linux-x86_64/wheel
+copying build/lib/app.py -> build/bdist.linux-x86_64/wheel
+copying build/lib/__init__.py -> build/bdist.linux-x86_64/wheel
+running install_egg_info
+running egg_info
+writing pybuild_flow.egg-info/PKG-INFO
+writing dependency_links to pybuild_flow.egg-info/dependency_links.txt
+writing namespace_packages to pybuild_flow.egg-info/namespace_packages.txt
+writing top-level names to pybuild_flow.egg-info/top_level.txt
+reading manifest file 'pybuild_flow.egg-info/SOURCES.txt'
+writing manifest file 'pybuild_flow.egg-info/SOURCES.txt'
+Copying pybuild_flow.egg-info to build/bdist.linux-x86_64/wheel/pybuild_flow-1.0.dev0.egg-info
+running install_scripts
+creating build/bdist.linux-x86_64/wheel/pybuild_flow-1.0.dev0.dist-info/WHEEL
+creating 'dist/pybuild_flow-1.0.dev0-py3-none-any.whl' and adding 'build/bdist.linux-x86_64/wheel' to it
+adding '__init__.py'
+adding 'app.py'
+adding 'pybuild_flow-1.0.dev0.dist-info/METADATA'
+adding 'pybuild_flow-1.0.dev0.dist-info/WHEEL'
+adding 'pybuild_flow-1.0.dev0.dist-info/namespace_packages.txt'
+adding 'pybuild_flow-1.0.dev0.dist-info/top_level.txt'
+adding 'pybuild_flow-1.0.dev0.dist-info/zip-safe'
+adding 'pybuild_flow-1.0.dev0.dist-info/RECORD'
+removing build/bdist.linux-x86_64/wheel

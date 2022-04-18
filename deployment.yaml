@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flaskapplication
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flaskapplication
+  template:
+    metadata:
+      labels:
+        app: flaskapplication
+    spec:
+      containers:
+      - name: flaskapplication
+        image: gcr.io/disney-218910/flask-build:3.0
+        ports:
+        - containerPort: 8086
