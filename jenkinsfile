@@ -1,0 +1,12 @@
+pipeline {
+    agent any 
+    stages {
+        stage('code preperation from scm') {
+            steps {
+                git credentialsId: 'github_credentials', url: 'https://github.com/sathish108/pipeline'
+                echo "pulled code from Git"
+            }
+        }
+        stage('')
+    }
+}
