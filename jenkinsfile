@@ -7,5 +7,10 @@ pipeline {
                 echo "pulled code from Git"
             }
         }
+        stage('pylint testing') {
+    	    steps {
+                sh '/usr/local/bin/pylint -r  y text  y $WORKSPACE/src/main/python/*  $WORKSPACE/src/unittest/python/* || exit 0 >> pylintresults.txt'
+            }
+       }
     }
 }
