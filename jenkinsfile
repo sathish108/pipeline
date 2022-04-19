@@ -7,6 +7,5 @@ pipeline {
                 echo "pulled code from Git"
             }
         }
-        stage('')
     }
 }
